@@ -47,10 +47,10 @@ if __name__ == '__main__':
     app.layout = html.Div(children=[
         # All elements from the top of the page
         html.Div([
-            html.H1(children='Hello Dash'),
+            html.H1(children='Traffic Accident Visualizations'),
 
             html.Div(children='''
-                Dash: A web application framework for Python.
+                A set of visualisations displaying traffic accidents in the UK over time.
             '''),
 
             dcc.Graph(
