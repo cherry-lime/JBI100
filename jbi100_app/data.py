@@ -5,6 +5,6 @@ def get_data():
     # Read data
     df = px.data.iris()
 
-    # Any further data preprocessing can go her
+    # Any further data preprocessing can go here
 
     return df
