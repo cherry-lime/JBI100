@@ -10,7 +10,7 @@ import plotly.express as px
 from dash.dependencies import Input, Output
 import plotly.graph_objects as go
 import plotly.io as pio
-import dash_bootstrap_components as dbc
+from jbi100_app.data import get_data
 
 pd.options.mode.chained_assignment = None  # default='warn'
 
@@ -19,48 +19,10 @@ app.title = "JBI100 Dashboard"
 
 if __name__ == '__main__':
     # Create data
-    road = pd.read_csv("dataset.csv")
-    road = road.replace('?', np.nan)
-    roads = road.drop(columns=['Junction_Control', '2nd_Road_Class','Age_of_Vehicle','Engine_Capacity_(CC)','Propulsion_Code','Driver_Home_Area_Type'])
-    roads = roads.dropna()
-    intermediate = roads.drop(columns=['Accident_Index','Location_Easting_OSGR','Location_Northing_OSGR','Longitude','Latitude','Date','Time','Local_Authority_(Highway)','LSOA_of_Accident_Location'])
-    intermediate = intermediate.astype('int64')
-    intermediate2 = roads[['Accident_Index','Location_Easting_OSGR','Location_Northing_OSGR','Longitude','Latitude','Date','Time','Local_Authority_(Highway)','LSOA_of_Accident_Location']]
-    road_clean = intermediate2.join(intermediate)
-    road_clean = road_clean.dropna()
-    road_clean['Longitude'] = road_clean['Longitude'].astype('float64')
-    road_clean['Latitude'] = road_clean['Latitude'].astype('float64')
-    road_clean['Year']=road_clean['Accident_Index'].str[:4]
-    road_clean['Month']=road_clean['Date'].str[3:5]
-    road_clean['Hour']=road_clean['Time'].str[:2]
-    road_clean['Day']=road_clean['Date'].str[:2]
-    road_clean = road_clean.dropna()
-    road_clean['Year']=road_clean['Year'].astype('int64')
-    road_clean['Month']=road_clean['Month'].astype('int64')
-    road_clean['Hour']=road_clean['Hour'].astype('int64')
-    road_clean['Day']=road_clean['Day'].astype('int64')
-    road_clean['Datetime'] = road_clean['Date'].replace('/','-')
-    road_clean['Datetime'] = pd.to_datetime(road_clean.Date)
-    road_clean['Day_of_week']=road_clean['Datetime'].dt.dayofweek
-    road_clean['Day_of_week']=road_clean['Day_of_week']+1
-    day_sorted = road_clean.copy()
-    hour_sorted = road_clean.copy()
-    day_sorted.sort_values('Day_of_week', ascending=True, ignore_index=True, inplace=True)
-    hour_sorted.sort_values('Hour', ascending=True, ignore_index=True, inplace=True)
-
-    # For the sunburst graph
-    df_sunburst = road_clean.copy()
-    df_sunburst['Sex_of_Driver']=df_sunburst['Sex_of_Driver'].replace(1, 'Men')
-    df_sunburst['Sex_of_Driver']=df_sunburst['Sex_of_Driver'].replace(2, 'Women')
-    df_sunburst['Sex_of_Driver']=df_sunburst['Sex_of_Driver'].replace(3, 'Unknown')
-    #df_sunburst['Age_group']=df_sunburst['Age_of_Driver'].mask(df_sunburst['Age_of_Driver'] < 18, 'Under 18')
-    #df_sunburst['Age_group']=df_sunburst['Age_group'].mask(df_sunburst['Age_of_Driver'] >= 60, 'Over 60')
-    #df_sunburst['Age_group']=np.where(df_sunburst['Age_of_Driver'].between(18,29), '18 to 29', df_sunburst['Age_group'])
-    #df_sunburst['Age_group']=np.where(df_sunburst['Age_of_Driver'].between(30,39), '30 to 39', df_sunburst['Age_group'])
-    #df_sunburst['Age_group']=np.where(df_sunburst['Age_of_Driver'].between(40,49), '40 to 49', df_sunburst['Age_group'])
-    #df_sunburst['Age_group']=np.where(df_sunburst['Age_of_Driver'].between(50,59), '50 to 59', df_sunburst['Age_group'])
- 
-
+    road_clean = get_data()[0]
+    day_sorted = get_data()[1]
+    hour_sorted = get_data()[2]
+    df_sunburst = get_data()[3]
     # Instantiate custom views
 
     animations = {
