@@ -1,6 +1,6 @@
 from dash import dcc, html
 from ..config import color_list1, color_list2
-
+from ..data import get_data
 
 def generate_description_card():
     """
@@ -10,10 +10,10 @@ def generate_description_card():
     return html.Div(
         id="description-card",
         children=[
-            html.H5("Example dashboard"),
+            html.H5("Road Safety Visualisation Tool"),
             html.Div(
                 id="intro",
-                children="You can use this as a basic template for your JBI100 visualization project.",
+                children="A tool developed for the course JBI100 for use in visualising traffic accident data in Great Britain during 2015.",
             ),
         ],
     )
@@ -27,18 +27,21 @@ def generate_control_card():
     return html.Div(
         id="control-card",
         children=[
-            html.Label("Color scatterplot 1"),
+            html.Label("Bar chart x-axis"),
             dcc.Dropdown(
-                id="select-color-scatter-1",
-                options=[{"label": i, "value": i} for i in color_list1],
-                value=color_list1[0],
+                id="dropdown1",
+                options=[{"label":x,"value":x} for x in get_data()[0].columns],
+                value=get_data()[0].columns[11],
+                clearable=False
             ),
             html.Br(),
-            html.Label("Color scatterplot 2"),
+            html.Label("Bar chart y-axis"),
             dcc.Dropdown(
-                id="select-color-scatter-2",
-                options=[{"label": i, "value": i} for i in color_list2],
-                value=color_list2[0],
+                id="dropdown2",
+                options=[{"label":x,"value":x} for x in get_data()[0].columns],
+                value=get_data()[0].columns[10],
+                clearable=False,
+                className="dropdown"
             ),
         ], style={"textAlign": "float-left"}
     )

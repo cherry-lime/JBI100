@@ -13,9 +13,11 @@ import plotly.io as pio
 from jbi100_app.data import get_data
 
 pd.options.mode.chained_assignment = None  # default='warn'
-
-app = dash.Dash(__name__)#, external_stylesheets=[dbc.themes.CYBORG])
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+#app = dash.Dash(__name__)#, external_stylesheets=[dbc.themes.CYBORG])
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets) 
 app.title = "JBI100 Dashboard"
+
 
 if __name__ == '__main__':
     # Create data
@@ -23,8 +25,8 @@ if __name__ == '__main__':
     day_sorted = get_data()[1]
     hour_sorted = get_data()[2]
     df_sunburst = get_data()[3]
-    # Instantiate custom views
 
+    # Instantiate custom views
     animations = {
         'Month': px.scatter_mapbox(road_clean, lat="Latitude", lon="Longitude", color="Accident_Severity",
                   #color_continuous_scale=px.colors.cyclical.IceFire, 
@@ -66,52 +68,23 @@ if __name__ == '__main__':
         id="app-container",
         children=[
             html.Div(
-                html.H1(children="Dashboard"),
+                id="left-column",
+                className="three columns",
+                children=make_menu_layout()
             ),
-
-
-            html.Div(
-                #id="left-column",
-                #className="dash-bootstrap",
-                children=[#make_menu_layout(),
-                    #dcc.Dropdown(
-                    #    id=
-                    #)
-                    
-                    dcc.Graph(id="sunburst-graph",figure=fig),
-                    dcc.Dropdown(
-                        id="dropdown1",
-                        options=[{"label":x,"value":x} for x in road_clean.columns],
-                        value=road_clean.columns[11],
-                        clearable=False
-                    ),
-                    dcc.Dropdown(
-                        id="dropdown2",
-                        options=[{"label":x,"value":x} for x in road_clean.columns],
-                        value=road_clean.columns[10],
-                        clearable=False,
-                        className="dropdown"
-                    ),
-                    #dbc.DropdownMenu(
-                    #    label="Choose the value for y",
-                    #    color="Secondary",
-                    #    menu_variant="dark",
-                    #    children=[x for x in road_clean.columns],
-                    #    id="dropdown3"
-                    #),
+            html.Div([
+                html.Div([
+                    html.H3('Interactive histogram'),
                     dcc.Graph(id="histo-graph")
-                
-                ],
-            ),
-    
-            # Right column
-            html.Div(
-                #id="right-column",
-                #className="right-column",
-                children=[
-                    #scatterplot1,
-                    #scatterplot2
-                    #html.H1('Heading', style={'backgroundColor':'blue'}),
+                ], className="six columns"),
+
+                html.Div([
+                    html.H3('Sunburst graph'),
+                    dcc.Graph(id="sunburst-graph",figure=fig)
+                ], className="six columns")
+            ], className="container"),
+            html.Div([
+                html.Div([
                     html.P("Select an animation:"),
                     dcc.RadioItems(
                         id='selection',
@@ -119,29 +92,10 @@ if __name__ == '__main__':
                         value='Month'
                     ),
                     dcc.Graph(id="gis-graph"),
-                ],
-                
-
-            ),
+                ], className="six columns")
+            ], className="container")
         ],
     )
-
-    # Define interactions
-#    @app.callback(
-#        Output(scatterplot1.html_id, "figure"), [
-#        Input("select-color-scatter-1", "value"),
-#        Input(scatterplot2.html_id, 'selectedData')
-#    ])
-#    def update_scatter_1(selected_color, selected_data):
-#        return scatterplot1.update(selected_color, selected_data)
-
-#    @app.callback(
-#        Output(scatterplot2.html_id, "figure"), [
-#        Input("select-color-scatter-2", "value"),
-#        Input(scatterplot1.html_id, 'selectedData')
-#    ])
-#    def update_scatter_2(selected_color, selected_data):
-#        return scatterplot2.update(selected_color, selected_data)
 
     @app.callback(
         Output("gis-graph","figure"),
@@ -150,15 +104,6 @@ if __name__ == '__main__':
     def display_animated_graphs(s):
         return animations[s]
 
-    #@app.callback(
-    #    Output("sunburst-graph", "figure"),
-        
-    #)
-    #def display_sunburst_graph():
-    #    fig = px.sunburst(df_sunburst, path=['Sex_of_Driver', 'Age_of_Driver'],
-    #                title='Driver sex and age distribution'
-    #                )
-    #    return fig
     @app.callback(
         Output("histo-graph","figure"),
         [Input("dropdown1","value")],
@@ -170,7 +115,5 @@ if __name__ == '__main__':
                             color=dropdown2,template="plotly_dark",
                             width=800, height=500)
         return fig
-
-
         
     app.run_server(debug=False, dev_tools_ui=False)
