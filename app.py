@@ -57,13 +57,6 @@ if __name__ == '__main__':
                   title='Traffic accidents in the UK in 2015')
     }
 
-
-    fig = px.sunburst(df_sunburst, path=['Sex_of_Driver', 'Age_of_Driver'],
-                    title='Driver sex and age distribution',
-                    template="plotly_dark",
-                    width=500, height=500
-                    )
-
     app.layout = html.Div(
         id="app-container",
         children=[
@@ -80,7 +73,7 @@ if __name__ == '__main__':
 
                 html.Div([
                     html.H3('Sunburst graph'),
-                    dcc.Graph(id="sunburst-graph",figure=fig)
+                    dcc.Graph(id="sunburst-graph")
                 ], className="six columns")
             ], className="container"),
             html.Div([
@@ -93,7 +86,7 @@ if __name__ == '__main__':
                     ),
                     dcc.Graph(id="gis-graph"),
                 ], className="six columns")
-            ], className="container")
+            ], className="container"),
         ],
     )
 
@@ -115,5 +108,17 @@ if __name__ == '__main__':
                             color=dropdown2,template="plotly_dark",
                             width=800, height=500)
         return fig
-        
+
+    @app.callback(
+        Output("sunburst-graph","figure"),
+        [Input("sunburstmenu","value")]
+    )
+    def update_sunburstgraph(sunburstmenu):
+        fig = px.sunburst(df_sunburst, path=sunburstmenu,
+                title='Driver sex and age distribution',
+                template="plotly_dark",
+                width=500, height=500
+                )
+        return fig
+
     app.run_server(debug=False, dev_tools_ui=False)

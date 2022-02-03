@@ -43,6 +43,14 @@ def generate_control_card():
                 clearable=False,
                 className="dropdown"
             ),
+            html.Br(),
+            html.Label('Select attributes for Sunburst chart'),
+            dcc.Dropdown(
+                id="sunburstmenu",
+                options=[{"label":x,"value":x} for x in get_data()[0].columns],
+                value= [get_data()[3].columns[58], get_data()[3].columns[59]],
+                multi=True
+            ),
         ], style={"textAlign": "float-left"}
     )
 
