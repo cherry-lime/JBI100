@@ -150,6 +150,7 @@ if __name__ == '__main__':
                 #title='Traffic accidents in the UK in 2015'
                 )
         else: print("Incorrect input.")
+        fig.update_layout(margin={'l': 40, 'b': 40, 't': 10, 'r': 0}, hovermode='closest', dragmode='lasso',)
         return fig
 
     @app.callback(
