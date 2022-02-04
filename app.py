@@ -105,13 +105,13 @@ if __name__ == '__main__':
 
     @app.callback(
         Output("cartograph","figure"),
-        [Input("cartomenu","value")],
+        [Input("boxmenu","value")],
         [Input("timerange","value")]
     )
 
-    def update_map(cartomenu, timerange):
+    def update_map(boxmenu, timerange):
         if timerange == "Month":
-            fig = px.scatter_mapbox(road_clean, lat="Latitude", lon="Longitude", color=cartomenu,
+            fig = px.scatter_mapbox(road_clean, lat="Latitude", lon="Longitude", color=boxmenu,
                 #color_continuous_scale=px.colors.cyclical.IceFire, 
                 #size='Accident_Severity',
                 size_max=5, zoom=5,
@@ -122,7 +122,7 @@ if __name__ == '__main__':
                 #title='Traffic accidents in the UK in 2015'
                 )
         elif timerange == "Day of the week":
-            fig = px.scatter_mapbox(day_sorted, lat="Latitude", lon="Longitude", color=cartomenu,
+            fig = px.scatter_mapbox(day_sorted, lat="Latitude", lon="Longitude", color=boxmenu,
                 #color_continuous_scale=px.colors.cyclical.IceFire, 
                 #size='Accident_Severity',
                 size_max=5, zoom=5,
@@ -133,7 +133,7 @@ if __name__ == '__main__':
                 #title='Traffic accidents in the UK in 2015'
                 )
         elif timerange == "Hour":
-            fig = px.scatter_mapbox(hour_sorted, lat="Latitude", lon="Longitude", color=cartomenu,
+            fig = px.scatter_mapbox(hour_sorted, lat="Latitude", lon="Longitude", color=boxmenu,
                 #color_continuous_scale=px.colors.cyclical.IceFire, 
                 #size='Accident_Severity',
                 size_max=5, zoom=5,

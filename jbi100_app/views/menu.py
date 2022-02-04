@@ -52,7 +52,7 @@ def generate_control_card():
                 multi=True
             ),
             #html.Br(),
-            html.H5('Select attribute for box and cal plot'),
+            html.H5('Select attribute for map, box plot, and cal plot'),
             dcc.Dropdown(
                 id="boxmenu",
                 options=[{"label":x,"value":x} for x in get_data()[0].columns],
@@ -60,13 +60,13 @@ def generate_control_card():
                 clearable=False,
             ),
             #html.Br(),
-            html.H5('Select attribute for map coloring'),
-            dcc.Dropdown(
-                id="cartomenu",
-                options=[{"label":x,"value":x} for x in get_data()[0].columns],
-                value =get_data()[0].columns[10],
-                clearable=False,
-            ),
+            #html.H5('Select attribute for map coloring'),
+            #dcc.Dropdown(
+            #    id="cartomenu",
+            #    options=[{"label":x,"value":x} for x in get_data()[0].columns],
+            #    value =get_data()[0].columns[10],
+            #    clearable=False,
+            #),
             #html.Br(),
             html.H5('Select map timerange'),
             dcc.RadioItems(
