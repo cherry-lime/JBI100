@@ -14,7 +14,7 @@ We suggest you to create a virtual environment for running this app with Python 
 and open your terminal/command prompt in the root folder.
 
 
-open the command prompt
+Start by opening the command prompt
 cd into the folder where you want to save the files and run the following commands.
 
 ```
