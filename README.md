@@ -18,7 +18,6 @@ Start by opening the command prompt
 cd into the folder where you want to save the files and run the following commands.
 
 ```
-> cd <folder name on your computer>
 > python -m venv venv
 ```
 If python is not recognized use python3 instead
