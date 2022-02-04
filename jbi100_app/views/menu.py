@@ -58,6 +58,25 @@ def generate_control_card():
                 options=[{"label":x,"value":x} for x in get_data()[0].columns],
                 value =get_data()[0].columns[10],
                 clearable=False,
+            ),
+            #html.Br(),
+            html.H5('Select attribute for map coloring'),
+            dcc.Dropdown(
+                id="cartomenu",
+                options=[{"label":x,"value":x} for x in get_data()[0].columns],
+                value =get_data()[0].columns[10],
+                clearable=False,
+            ),
+            #html.Br(),
+            html.H5('Select map timerange'),
+            dcc.RadioItems(
+                id='timerange',
+                options=[
+                    {'label': 'Month', 'value': 'Month'},
+                    {'label': 'Day of the week', 'value': 'Day of the week'},
+                    {'label': 'Hour', 'value': 'Hour'}
+                ],
+                value='Month'
             )
         ], style={"textAlign": "float-left"}
     )

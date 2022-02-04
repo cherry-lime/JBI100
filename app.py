@@ -29,35 +29,11 @@ if __name__ == '__main__':
     
     # Instantiate custom views
     animations = {
-        'Month': px.scatter_mapbox(road_clean, lat="Latitude", lon="Longitude", color="Accident_Severity",
-                  #color_continuous_scale=px.colors.cyclical.IceFire, 
-                  size_max=5, zoom=5,
-                  hover_data=['Date','Time'],
-                  mapbox_style="carto-positron",
-                  animation_frame="Month",
-                  #title='Traffic accidents in the UK in 2015',
-                  template="plotly_dark",
-                  width=1000, height=600),
-        'Day of the week': px.scatter_mapbox(day_sorted, lat="Latitude", lon="Longitude", color="Accident_Severity",
-                  #color_continuous_scale=px.colors.cyclical.IceFire, 
-                  #size='Accident_Severity',
-                  size_max=5, zoom=5,
-                  hover_data=['Date','Time'],
-                  mapbox_style="carto-positron",
-                  animation_frame="Day_of_week",
-                  template="plotly_dark",
-                  #title='Traffic accidents in the UK in 2015'
-                  ),
-        'Hour': px.scatter_mapbox(hour_sorted, lat="Latitude", lon="Longitude", color="Accident_Severity",
-                  #color_continuous_scale=px.colors.cyclical.IceFire, 
-                  #size='Accident_Severity',
-                  size_max=5, zoom=5,
-                  hover_data=['Date','Time'],
-                  mapbox_style="carto-positron",
-                  animation_frame="Hour",
-                  template="plotly_dark",
-                  #title='Traffic accidents in the UK in 2015'
-                  )
+        'Month': road_clean,
+
+        'Day of the week': day_sorted,
+
+        'Hour': hour_sorted
     }
 
     app.layout = html.Div(
@@ -70,15 +46,9 @@ if __name__ == '__main__':
             ),
 
             html.Div([
-
                 html.Div([
                     html.H5("Select an animation:"),
-                    dcc.RadioItems(
-                        id='selection',
-                        options=[{'label': x, 'value': x} for x in animations],
-                        value='Month'
-                    ),
-                    dcc.Graph(id="gis-graph"),
+                    dcc.Graph(id="cartograph"),
                 ], className="five columns"),
 
                 html.Div([
@@ -111,13 +81,6 @@ if __name__ == '__main__':
     )
 
     @app.callback(
-        Output("gis-graph","figure"),
-        [Input("selection","value")])
-    
-    def display_animated_graphs(s):
-        return animations[s]
-
-    @app.callback(
         Output("histo-graph","figure"),
         [Input("dropdown1","value")],
         [Input("dropdown2","value")]
@@ -141,6 +104,49 @@ if __name__ == '__main__':
         return fig
 
     @app.callback(
+        Output("cartograph","figure"),
+        [Input("cartomenu","value")],
+        [Input("timerange","value")]
+    )
+
+    def update_map(cartomenu, timerange):
+        if timerange == "Month":
+            fig = px.scatter_mapbox(road_clean, lat="Latitude", lon="Longitude", color=cartomenu,
+                #color_continuous_scale=px.colors.cyclical.IceFire, 
+                #size='Accident_Severity',
+                size_max=5, zoom=5,
+                hover_data=['Date','Time'],
+                mapbox_style="carto-positron",
+                animation_frame="Month",
+                template="plotly_dark",
+                #title='Traffic accidents in the UK in 2015'
+                )
+        elif timerange == "Day of the week":
+            fig = px.scatter_mapbox(day_sorted, lat="Latitude", lon="Longitude", color=cartomenu,
+                #color_continuous_scale=px.colors.cyclical.IceFire, 
+                #size='Accident_Severity',
+                size_max=5, zoom=5,
+                hover_data=['Date','Time'],
+                mapbox_style="carto-positron",
+                animation_frame="Day_of_week",
+                template="plotly_dark",
+                #title='Traffic accidents in the UK in 2015'
+                )
+        elif timerange == "Hour":
+            fig = px.scatter_mapbox(hour_sorted, lat="Latitude", lon="Longitude", color=cartomenu,
+                #color_continuous_scale=px.colors.cyclical.IceFire, 
+                #size='Accident_Severity',
+                size_max=5, zoom=5,
+                hover_data=['Date','Time'],
+                mapbox_style="carto-positron",
+                animation_frame="Hour",
+                template="plotly_dark",
+                #title='Traffic accidents in the UK in 2015'
+                )
+        else: print("Incorrect input.")
+        return fig
+
+    @app.callback(
         Output("box-plot","figure"),
         [Input("boxmenu","value")]
     )
@@ -156,6 +162,7 @@ if __name__ == '__main__':
         Output("cal-plot", "figure"),
         [Input("boxmenu", "value")]
     )
+
     def update_calplot(boxmenu):
         fig = calplot(road_clean, x = "Datetime", y=boxmenu, dark_theme=True,)
         return fig
