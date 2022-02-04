@@ -77,7 +77,15 @@ def generate_control_card():
                     {'label': 'Hour', 'value': 'Hour'}
                 ],
                 value='Month'
-            )
+            ),
+            html.H5('Select color mode'),
+            dcc.RadioItems(
+                id='colormode',
+                options=[{'value': x, 'label': x} 
+                        for x in ['discrete', 'continuous']],
+                value='discrete'
+            ),
+            
         ], style={"textAlign": "float-left"}
     )
 

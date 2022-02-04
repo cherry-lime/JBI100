@@ -106,10 +106,15 @@ if __name__ == '__main__':
     @app.callback(
         Output("cartograph","figure"),
         [Input("boxmenu","value")],
-        [Input("timerange","value")]
+        [Input("timerange","value")],
+        [Input("colormode","value")]
     )
 
-    def update_map(boxmenu, timerange):
+    def update_map(boxmenu, timerange, colormode):
+        if colormode == 'discrete':
+            road_clean[boxmenu] = road_clean[boxmenu].astype(str)
+        else:
+            road_clean[boxmenu] = road_clean[boxmenu].astype(float)
         if timerange == "Month":
             fig = px.scatter_mapbox(road_clean, lat="Latitude", lon="Longitude", color=boxmenu,
                 #color_continuous_scale=px.colors.cyclical.IceFire, 
