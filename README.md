@@ -20,7 +20,6 @@ cd into the folder where you want to save the files and run the following comman
 ```
 > cd <folder name on your computer>
 > python -m venv venv
-
 ```
 If python is not recognized use python3 instead
 
@@ -28,7 +27,6 @@ In Windows:
 
 ```
 > venv\Scripts\activate
-
 ```
 In Unix system:
 ```
