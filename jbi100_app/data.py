@@ -1,11 +1,11 @@
 import numpy as np 
 import pandas as pd
 
-pd.options.mode.chained_assignment = None  # default='warn'
-
 def get_data():
     # Read data
+    pd.options.mode.chained_assignment = None  # default='warn'
     road = pd.read_csv("dataset.csv")
+    clustered = pd.read_csv("kmeans.csv", index_col=0)
     # Data cleaning
     road = road.replace('?', np.nan)
     roads = road.drop(columns=['Junction_Control', '2nd_Road_Class','Age_of_Vehicle','Engine_Capacity_(CC)','Propulsion_Code','Driver_Home_Area_Type'])
@@ -38,5 +38,5 @@ def get_data():
     df_sunburst['Sex_of_Driver']=df_sunburst['Sex_of_Driver'].replace(1, 'Men')
     df_sunburst['Sex_of_Driver']=df_sunburst['Sex_of_Driver'].replace(2, 'Women')
     df_sunburst['Sex_of_Driver']=df_sunburst['Sex_of_Driver'].replace(3, 'Unknown')
-
+    road_clean['cluster']=clustered['kmeans cluster']
     return road_clean, day_sorted, hour_sorted, df_sunburst

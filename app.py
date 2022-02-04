@@ -11,8 +11,8 @@ from dash.dependencies import Input, Output
 import plotly.graph_objects as go
 import plotly.io as pio
 from jbi100_app.data import get_data
+from plotly_calplot import calplot
 
-pd.options.mode.chained_assignment = None  # default='warn'
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 #app = dash.Dash(__name__)#, external_stylesheets=[dbc.themes.CYBORG])
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets) 
@@ -21,11 +21,12 @@ app.title = "JBI100 Dashboard"
 
 if __name__ == '__main__':
     # Create data
+    pd.options.mode.chained_assignment = None
     road_clean = get_data()[0]
     day_sorted = get_data()[1]
     hour_sorted = get_data()[2]
     df_sunburst = get_data()[3]
-
+    
     # Instantiate custom views
     animations = {
         'Month': px.scatter_mapbox(road_clean, lat="Latitude", lon="Longitude", color="Accident_Severity",
@@ -34,9 +35,9 @@ if __name__ == '__main__':
                   hover_data=['Date','Time'],
                   mapbox_style="carto-positron",
                   animation_frame="Month",
-                  title='Traffic accidents in the UK in 2015',
+                  #title='Traffic accidents in the UK in 2015',
                   template="plotly_dark",
-                  width=800, height=600),
+                  width=1000, height=600),
         'Day of the week': px.scatter_mapbox(day_sorted, lat="Latitude", lon="Longitude", color="Accident_Severity",
                   #color_continuous_scale=px.colors.cyclical.IceFire, 
                   #size='Accident_Severity',
@@ -45,7 +46,8 @@ if __name__ == '__main__':
                   mapbox_style="carto-positron",
                   animation_frame="Day_of_week",
                   template="plotly_dark",
-                  title='Traffic accidents in the UK in 2015'),
+                  #title='Traffic accidents in the UK in 2015'
+                  ),
         'Hour': px.scatter_mapbox(hour_sorted, lat="Latitude", lon="Longitude", color="Accident_Severity",
                   #color_continuous_scale=px.colors.cyclical.IceFire, 
                   #size='Accident_Severity',
@@ -54,7 +56,8 @@ if __name__ == '__main__':
                   mapbox_style="carto-positron",
                   animation_frame="Hour",
                   template="plotly_dark",
-                  title='Traffic accidents in the UK in 2015')
+                  #title='Traffic accidents in the UK in 2015'
+                  )
     }
 
     app.layout = html.Div(
@@ -65,19 +68,11 @@ if __name__ == '__main__':
                 className="three columns",
                 children=make_menu_layout()
             ),
+
             html.Div([
-                html.Div([
-                    html.H3('Interactive histogram'),
-                    dcc.Graph(id="histo-graph")
-                ], className="six columns"),
 
                 html.Div([
-                    html.H3('Sunburst graph'),
-                    dcc.Graph(id="sunburst-graph")
-                ], className="six columns")
-            ], className="container"),
-            html.Div([
-                html.Div([
+                    html.Br(),
                     html.P("Select an animation:"),
                     dcc.RadioItems(
                         id='selection',
@@ -85,8 +80,34 @@ if __name__ == '__main__':
                         value='Month'
                     ),
                     dcc.Graph(id="gis-graph"),
-                ], className="six columns")
-            ], className="container"),
+                ], className="five columns"),
+
+                html.Div([
+                    html.H3('Sunburst graph'),
+                    dcc.Graph(id="sunburst-graph")
+                ], className="four columns")
+            ]),
+
+            html.Div([                
+                
+                html.Div([
+                    html.H3('Histogram'),
+                    dcc.Graph(id="histo-graph")
+                ], className="five columns"),
+
+                html.Div([
+                    html.H3('Boxplot'),
+                    dcc.Graph(id="box-plot"),
+                ], className="four columns"),
+                
+                ]
+            ),
+
+            html.Div([
+                html.H3("Cal plot"),
+                dcc.Graph(id="cal-plot"),
+            ], className="six columns"
+            ),
         ],
     )
 
@@ -115,10 +136,28 @@ if __name__ == '__main__':
     )
     def update_sunburstgraph(sunburstmenu):
         fig = px.sunburst(df_sunburst, path=sunburstmenu,
-                title='Driver sex and age distribution',
                 template="plotly_dark",
                 width=500, height=500
                 )
         return fig
 
+    @app.callback(
+        Output("box-plot","figure"),
+        [Input("boxmenu","value")]
+    )
+    def update_boxplt(boxmenu):
+        fig = px.violin(road_clean, y=boxmenu, box=True,
+                color='cluster',
+                points='all', # can be 'outliers', or False
+                template="plotly_dark",
+               )
+        return fig
+
+    @app.callback(
+        Output("cal-plot", "figure"),
+        [Input("boxmenu", "value")]
+    )
+    def update_calplot(boxmenu):
+        fig = calplot(road_clean, x = "Datetime", y=boxmenu, dark_theme=True,)
+        return fig
     app.run_server(debug=False, dev_tools_ui=False)

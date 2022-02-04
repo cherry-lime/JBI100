@@ -10,7 +10,7 @@ def generate_description_card():
     return html.Div(
         id="description-card",
         children=[
-            html.H5("Road Safety Visualisation Tool"),
+            html.H2("Road Safety Dashboard"),
             html.Div(
                 id="intro",
                 children="A tool developed for the course JBI100 for use in visualising traffic accident data in Great Britain during 2015.",
@@ -51,6 +51,14 @@ def generate_control_card():
                 value= [get_data()[3].columns[58], get_data()[3].columns[59]],
                 multi=True
             ),
+            html.Br(),
+            html.Label('Select attribute for box and cal plot'),
+            dcc.Dropdown(
+                id="boxmenu",
+                options=[{"label":x,"value":x} for x in get_data()[0].columns],
+                value =get_data()[0].columns[10],
+                clearable=False,
+            )
         ], style={"textAlign": "float-left"}
     )
 
