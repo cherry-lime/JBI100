@@ -39,4 +39,6 @@ def get_data():
     df_sunburst['Sex_of_Driver']=df_sunburst['Sex_of_Driver'].replace(2, 'Women')
     df_sunburst['Sex_of_Driver']=df_sunburst['Sex_of_Driver'].replace(3, 'Unknown')
     road_clean['cluster']=clustered['kmeans cluster']
-    return road_clean, day_sorted, hour_sorted, df_sunburst
+    df_box = road_clean.copy()
+    df_box.sort_values('cluster', ascending=True, ignore_index=True, inplace=True)
+    return road_clean, day_sorted, hour_sorted, df_sunburst, df_box

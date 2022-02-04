@@ -26,6 +26,7 @@ if __name__ == '__main__':
     day_sorted = get_data()[1]
     hour_sorted = get_data()[2]
     df_sunburst = get_data()[3]
+    df_box = get_data()[4]
     
     # Instantiate custom views
     animations = {
@@ -156,7 +157,7 @@ if __name__ == '__main__':
         [Input("boxmenu","value")]
     )
     def update_boxplt(boxmenu):
-        fig = px.violin(road_clean, y=boxmenu, box=True,
+        fig = px.violin(df_box, y=boxmenu, box=True,
                 color='cluster',
                 points='all', # can be 'outliers', or False
                 template="plotly_dark",
