@@ -4,6 +4,14 @@
 
 This is the visualization tool making use of the Great Britain Road Safety date set
 
+Created by:
+
+Ruoying He 1407120
+Samir Saidi 1548735
+Gabriel van Mierlo 1560158
+Daniël Dankers 1586874
+
+
 ## Requirements
 
 * Python 3 (add it to your path (system variables) to make sure you can access it from the command prompt)
