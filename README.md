@@ -2,14 +2,14 @@
 
 ## About this app
 
-This is the visualization tool making use of the Great Britain Road Safety date set
+This is the visualization tool making use of the Great Britain Road Safety data set
 
 Created by:
 
-Ruoying He 1407120
-Samir Saidi 1548735
-Gabriel van Mierlo 1560158
-Daniël Dankers 1586874
+* Ruoying He (1407120)
+* Samir Saidi (1548735)
+* Gabriel van Mierlo (1560158)
+* Daniël Dankers (1586874)
 
 
 ## Requirements
