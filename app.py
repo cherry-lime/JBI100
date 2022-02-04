@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
         'Hour': hour_sorted
     }
-
+    # Overall layout
     app.layout = html.Div(
         id="app-container",
         children=[
@@ -81,6 +81,8 @@ if __name__ == '__main__':
         ],
     )
 
+    # Interaction features 
+    # Histogram
     @app.callback(
         Output("histo-graph","figure"),
         [Input("dropdown1","value")],
@@ -93,6 +95,7 @@ if __name__ == '__main__':
                             width=1000, height=500)
         return fig
 
+    # Sunburst graph
     @app.callback(
         Output("sunburst-graph","figure"),
         [Input("sunburstmenu","value")]
@@ -104,6 +107,7 @@ if __name__ == '__main__':
                 )
         return fig
 
+    # Map
     @app.callback(
         Output("cartograph","figure"),
         [Input("boxmenu","value")],
@@ -153,6 +157,7 @@ if __name__ == '__main__':
         fig.update_layout(margin={'l': 40, 'b': 40, 't': 10, 'r': 0}, hovermode='closest', dragmode='lasso',)
         return fig
 
+    # Box plot
     @app.callback(
         Output("box-plot","figure"),
         [Input("boxmenu","value")]
@@ -170,6 +175,7 @@ if __name__ == '__main__':
         [Input("boxmenu", "value")]
     )
 
+    # Calendar plot
     def update_calplot(boxmenu):
         fig = calplot(road_clean, x = "Datetime", y=boxmenu, dark_theme=True,)
         return fig

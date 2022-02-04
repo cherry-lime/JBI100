@@ -30,6 +30,7 @@ def get_data():
     road_clean['Datetime'] = pd.to_datetime(road_clean.Date)
     road_clean['Day_of_week']=road_clean['Datetime'].dt.dayofweek
     road_clean['Day_of_week']=road_clean['Day_of_week']+1
+    # For different time frames
     day_sorted = road_clean.copy()
     hour_sorted = road_clean.copy()
     day_sorted.sort_values('Day_of_week', ascending=True, ignore_index=True, inplace=True)
@@ -38,6 +39,7 @@ def get_data():
     df_sunburst['Sex_of_Driver']=df_sunburst['Sex_of_Driver'].replace(1, 'Men')
     df_sunburst['Sex_of_Driver']=df_sunburst['Sex_of_Driver'].replace(2, 'Women')
     df_sunburst['Sex_of_Driver']=df_sunburst['Sex_of_Driver'].replace(3, 'Unknown')
+    # Add cluster labels
     road_clean['cluster']=clustered['kmeans cluster']
     df_box = road_clean.copy()
     df_box.sort_values('cluster', ascending=True, ignore_index=True, inplace=True)
