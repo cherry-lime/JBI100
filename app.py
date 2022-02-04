@@ -72,8 +72,7 @@ if __name__ == '__main__':
             html.Div([
 
                 html.Div([
-                    html.Br(),
-                    html.P("Select an animation:"),
+                    html.H5("Select an animation:"),
                     dcc.RadioItems(
                         id='selection',
                         options=[{'label': x, 'value': x} for x in animations],
@@ -83,7 +82,7 @@ if __name__ == '__main__':
                 ], className="five columns"),
 
                 html.Div([
-                    html.H3('Sunburst graph'),
+                    html.H5('Sunburst graph'),
                     dcc.Graph(id="sunburst-graph")
                 ], className="four columns")
             ]),
@@ -91,12 +90,12 @@ if __name__ == '__main__':
             html.Div([                
                 
                 html.Div([
-                    html.H3('Histogram'),
+                    html.H5('Histogram'),
                     dcc.Graph(id="histo-graph")
                 ], className="five columns"),
 
                 html.Div([
-                    html.H3('Boxplot'),
+                    html.H5('Boxplot'),
                     dcc.Graph(id="box-plot"),
                 ], className="four columns"),
                 
@@ -104,7 +103,7 @@ if __name__ == '__main__':
             ),
 
             html.Div([
-                html.H3("Cal plot"),
+                html.H5("Cal plot"),
                 dcc.Graph(id="cal-plot"),
             ], className="six columns"
             ),
@@ -127,7 +126,7 @@ if __name__ == '__main__':
 
         fig = px.histogram(road_clean, x=dropdown1, 
                             color=dropdown2,template="plotly_dark",
-                            width=800, height=500)
+                            width=1000, height=500)
         return fig
 
     @app.callback(

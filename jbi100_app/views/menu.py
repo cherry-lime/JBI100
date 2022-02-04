@@ -27,15 +27,15 @@ def generate_control_card():
     return html.Div(
         id="control-card",
         children=[
-            html.Label("Bar chart x-axis"),
+            html.H5("Bar chart x-axis"),
             dcc.Dropdown(
                 id="dropdown1",
                 options=[{"label":x,"value":x} for x in get_data()[0].columns],
                 value=get_data()[0].columns[11],
                 clearable=False
             ),
-            html.Br(),
-            html.Label("Bar chart y-axis"),
+            #html.Br(),
+            html.H5("Bar chart y-axis"),
             dcc.Dropdown(
                 id="dropdown2",
                 options=[{"label":x,"value":x} for x in get_data()[0].columns],
@@ -43,16 +43,16 @@ def generate_control_card():
                 clearable=False,
                 className="dropdown"
             ),
-            html.Br(),
-            html.Label('Select attributes for Sunburst chart'),
+            #html.Br(),
+            html.H5('Select attributes for Sunburst chart'),
             dcc.Dropdown(
                 id="sunburstmenu",
                 options=[{"label":x,"value":x} for x in get_data()[0].columns],
                 value= [get_data()[3].columns[58], get_data()[3].columns[59]],
                 multi=True
             ),
-            html.Br(),
-            html.Label('Select attribute for box and cal plot'),
+            #html.Br(),
+            html.H5('Select attribute for box and cal plot'),
             dcc.Dropdown(
                 id="boxmenu",
                 options=[{"label":x,"value":x} for x in get_data()[0].columns],

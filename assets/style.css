@@ -20,11 +20,24 @@ Header {
     background-color: black;
 }
 
-h5 {
+h2 {
     color: #2c8cff;
-    font-weight: 300;
+    font-weight: bold;
 }
 
+h4 {
+    color: #2c8cff;
+    font-weight: bold;
+}
+
+h5 {
+    color: #2c8cff;
+    font-weight: bold;
+}
+
+h3 {
+    color:#2c8cff;
+}
 #intro {
     margin: 20px 0px;
     text-align: justify;
